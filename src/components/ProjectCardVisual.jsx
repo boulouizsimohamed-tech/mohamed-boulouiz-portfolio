@@ -6,6 +6,7 @@ import {
   Cpu, ArrowUpRight
 } from 'lucide-react';
 import BoMusicCarousel from './BoMusicCarousel';
+import BoDownloaderVisual from './BoDownloaderVisual';
 
 export default function ProjectCardVisual({ demoType, accentColor, title }) {
   if (demoType === 'audio-player') {
@@ -13,65 +14,7 @@ export default function ProjectCardVisual({ demoType, accentColor, title }) {
   }
 
   if (demoType === 'downloader') {
-    return (
-      <div className="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden bg-gradient-to-b from-zinc-950 to-zinc-900 p-4 flex flex-col justify-between border border-zinc-800 text-white select-none">
-        {/* Ambient glow */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-
-        {/* Top: Header & FastAPI status */}
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-            <span className="font-mono-accent text-[11px] uppercase tracking-wider text-zinc-300">BO Downloader // FastAPI</span>
-          </div>
-          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono-accent">
-            yt-dlp Engine Ready
-          </span>
-        </div>
-
-        {/* Middle: Mockup URL parser & stream resolution */}
-        <div className="my-auto space-y-3">
-          <div className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-between">
-            <span className="text-[11px] font-mono-accent text-zinc-400 truncate max-w-[200px]">
-              https://stream.service/watch?v=9xK102
-            </span>
-            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">
-              PARSED
-            </span>
-          </div>
-
-          {/* Format pills */}
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-md bg-emerald-500 text-zinc-950 font-bold text-[10px]">
-              1080p 60fps MP4
-            </span>
-            <span className="px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 font-medium text-[10px]">
-              320k MP3 Audio
-            </span>
-            <span className="px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 font-medium text-[10px]">
-              4K Ultra
-            </span>
-          </div>
-
-          {/* Active progress bar */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-[11px] font-mono-accent text-zinc-400">
-              <span>Background Downloader</span>
-              <span className="text-emerald-400 font-bold">88.4 MB / 102 MB (86%)</span>
-            </div>
-            <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
-              <div className="w-[86%] h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" />
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom stats */}
-        <div className="flex items-center justify-between pt-2 border-t border-zinc-800/80 text-[10px] font-mono-accent text-zinc-400">
-          <span>Speed: 18.4 MB/s</span>
-          <span>FastAPI Latency: 42ms</span>
-        </div>
-      </div>
-    );
+    return <BoDownloaderVisual />;
   }
 
   if (demoType === 'ecommerce') {

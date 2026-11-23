@@ -66,9 +66,9 @@ export const projectsData = [
     subtitle: "High-Performance Multi-Source Media Extraction & Downloader",
     tagline: "Ultra-fast media extraction powered by a sleek Flutter client and a high-throughput Python FastAPI backend utilizing yt-dlp.",
     summary: "BO Downloader provides a clean, zero-clutter solution for downloading videos and audio streams from diverse web platforms. By offloading heavy media stream resolution and demuxing to an asynchronous FastAPI backend running yt-dlp, the Flutter app guarantees instant link analysis, selectable resolutions (up to 4K and 320kbps MP3), and resumable background downloads.",
-    coverAccent: "from-emerald-500/20 via-teal-500/10 to-zinc-900/40",
-    borderAccent: "hover:border-emerald-500/50",
-    accentColor: "#10b981",
+    coverAccent: "from-amber-500/20 via-yellow-500/10 to-zinc-900/40",
+    borderAccent: "hover:border-amber-500/50",
+    accentColor: "#f59e0b",
     tags: ["Flutter", "Dart", "Python", "FastAPI", "yt-dlp", "background_downloader", "Async Queues"],
     metrics: [
       { label: "Resolution Support", value: "Up to 4K & 60fps" },
@@ -107,7 +107,9 @@ export const projectsData = [
         "Background Daemon: Native background downloader keeping persistent notification bars."
       ]
     },
-    demoType: "downloader"
+    demoType: "downloader",
+    downloadUrl: "https://github.com/boulouizsimohamed-tech/BO-Downloader-Releases",
+    downloadLabel: "Download Latest Release (APK)"
   },
   {
     id: "boulouiz-shop",
