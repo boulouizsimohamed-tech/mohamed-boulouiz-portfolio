@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Smartphone, Globe, PenTool, 
-  ArrowUpRight, Layers, Eye, Sliders, ExternalLink
+  ArrowUpRight, Layers, Eye, Sliders, ExternalLink, Download
 } from 'lucide-react';
 import { projectsData } from '../data/projects';
 import ProjectCardVisual from './ProjectCardVisual';
@@ -132,7 +132,7 @@ export default function Projects({ onLaunchDemo }) {
               </div>
 
               {/* Card Actions */}
-              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between gap-3">
+              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={() => handleOpenDetails(project)}
@@ -142,14 +142,28 @@ export default function Projects({ onLaunchDemo }) {
                   <span>Architecture & Details</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => onLaunchDemo && onLaunchDemo(project.demoType)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors shadow-xs"
-                >
-                  <span>Test Simulator</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  {project.downloadUrl && (
+                    <a
+                      href={project.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download APK</span>
+                    </a>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => onLaunchDemo && onLaunchDemo(project.demoType)}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors shadow-xs"
+                  >
+                    <span>Test Simulator</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </article>
           </ScrollReveal>

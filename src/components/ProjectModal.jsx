@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { 
   X, CheckCircle2, Cpu, Layers, ExternalLink, 
   Smartphone, ArrowRight, ShieldCheck, Sparkles,
-  Terminal, Globe, PenTool
+  Terminal, Globe, PenTool, Download
 } from 'lucide-react';
 import ProjectCardVisual from './ProjectCardVisual';
 
@@ -181,7 +181,7 @@ export default function ProjectModal({ project, isOpen, onClose, onOpenDemo }) {
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
           <button
             type="button"
             onClick={onClose}
@@ -190,17 +190,31 @@ export default function ProjectModal({ project, isOpen, onClose, onOpenDemo }) {
             Close Overview
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              if (onOpenDemo) onOpenDemo(project.demoType);
-            }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md"
-          >
-            <span>Launch Interactive Simulator</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex flex-wrap items-center gap-2.5">
+            {project.downloadUrl && (
+              <a
+                href={project.downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-all shadow-md hover:-translate-y-0.5"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download Latest Release</span>
+              </a>
+            )}
+
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                if (onOpenDemo) onOpenDemo(project.demoType);
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md"
+            >
+              <span>Launch Interactive Simulator</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </dialog>

@@ -53,7 +53,9 @@ export const projectsData = [
         "Storage & Cache: Hive local database for playlist caching, playback positions, and theme preferences."
       ]
     },
-    demoType: "audio-player"
+    demoType: "audio-player",
+    downloadUrl: "https://github.com/boulouizsimohamed-tech/BO-Music-Releases",
+    downloadLabel: "Download Latest Release (APK)"
   },
   {
     id: "bo-downloader",

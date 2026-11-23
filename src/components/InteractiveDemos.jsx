@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, Pause, SkipForward, SkipBack, Music, Volume2, 
-  DownloadCloud, Check, Sparkles, Smartphone, Layers, 
+  DownloadCloud, Download, Check, Sparkles, Smartphone, Layers, 
   ShoppingBag, ArrowRight, RefreshCw, Eye, Bell, 
   Sliders, ShieldCheck, Database, HardDrive, CheckCircle2
 } from 'lucide-react';
@@ -224,7 +224,16 @@ export default function InteractiveDemos({ activeLab = 'audio-player' }) {
                   <span className="text-xs font-mono-accent uppercase tracking-widest text-zinc-400">
                     BO Music v2.4 • Offline Engine
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href="https://github.com/boulouizsimohamed-tech/BO-Music-Releases"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-md text-[10px] font-mono-accent bg-amber-500 text-zinc-950 font-bold hover:bg-amber-400 flex items-center gap-1 transition-all shadow-xs"
+                    >
+                      <Download className="w-3 h-3" />
+                      <span>Download APK</span>
+                    </a>
                     <button
                       type="button"
                       onClick={triggerNotification}
