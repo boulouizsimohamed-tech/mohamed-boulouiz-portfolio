@@ -196,7 +196,7 @@ export default function ProjectModal({ project, isOpen, onClose, onOpenDemo }) {
                 href={project.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-all shadow-md hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-teal-400 text-zinc-950 hover:from-cyan-300 hover:to-teal-300 transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:-translate-y-0.5"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Latest Release</span>

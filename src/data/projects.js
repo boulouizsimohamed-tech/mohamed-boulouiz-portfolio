@@ -8,9 +8,9 @@ export const projectsData = [
     subtitle: "Offline Local Music & Video Player for Android & iOS",
     tagline: "Engineered with Flutter, high-fidelity audio decoding, custom dynamic theming, and lock-screen hardware integration.",
     summary: "BO Music is an offline multimedia mobile app tailored for audio and video enthusiasts. It bypasses network reliance by providing a gapless, low-latency local media player equipped with a floating theme selector, collapsible mini-player, earphone media button controls, custom video sizing overlays, and scheduled daily notifications.",
-    coverAccent: "from-amber-500/20 via-orange-500/10 to-zinc-900/40",
-    borderAccent: "hover:border-amber-500/50",
-    accentColor: "#f59e0b",
+    coverAccent: "from-cyan-500/20 via-teal-500/10 to-zinc-900/40",
+    borderAccent: "hover:border-cyan-500/50",
+    accentColor: "#06b6d4",
     tags: ["Flutter", "Dart", "just_audio", "Custom Theming", "Media Controls", "Local Notifications", "Android/iOS"],
     metrics: [
       { label: "Audio Latency", value: "<15ms" },

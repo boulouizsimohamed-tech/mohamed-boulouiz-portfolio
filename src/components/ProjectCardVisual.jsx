@@ -5,68 +5,11 @@ import {
   Sliders, Bell, Layers, ShieldCheck, Heart,
   Cpu, ArrowUpRight
 } from 'lucide-react';
+import BoMusicCarousel from './BoMusicCarousel';
 
 export default function ProjectCardVisual({ demoType, accentColor, title }) {
   if (demoType === 'audio-player') {
-    return (
-      <div className="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden bg-gradient-to-b from-zinc-950 to-zinc-900 p-4 flex flex-col justify-between border border-zinc-800 text-white select-none">
-        {/* Ambient glow */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-
-        {/* Top bar: BO Music header */}
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="font-mono-accent text-[11px] uppercase tracking-wider text-zinc-300">BO Music // Flutter</span>
-          </div>
-          <div className="flex items-center gap-1.5 bg-zinc-800/80 px-2 py-0.5 rounded-full text-[10px] text-amber-300 font-mono-accent">
-            <span>Offline Ready</span>
-          </div>
-        </div>
-
-        {/* Center: Vinyl Album Art with Equalizer Wave */}
-        <div className="flex items-center justify-center gap-4 my-auto">
-          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-zinc-800 via-zinc-700 to-amber-900/40 p-1.5 shadow-xl border border-zinc-700/60 flex items-center justify-center animate-spin-slow">
-            <div className="w-8 h-8 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center">
-              <Music className="w-4 h-4 text-amber-400" />
-            </div>
-          </div>
-
-          <div className="flex flex-col">
-            <span className="font-display font-bold text-sm sm:text-base text-zinc-100">Midnight Reverie</span>
-            <span className="text-xs text-zinc-400 font-mono-accent">Lossless FLAC • 24-bit/96kHz</span>
-            {/* Animated Equalizer Wave */}
-            <div className="flex items-end gap-1 h-5 mt-2">
-              {[40, 75, 55, 90, 60, 85, 30, 95, 70, 50, 80].map((h, i) => (
-                <div
-                  key={i}
-                  style={{ height: `${h}%` }}
-                  className="w-1 rounded-full bg-amber-400/80"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom: Mini-Player & Floating Theme Dots */}
-        <div className="flex items-center justify-between pt-2 border-t border-zinc-800/80">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[10px] text-zinc-400 font-mono-accent mr-1">THEME:</span>
-            <span className="w-3 h-3 rounded-full bg-amber-400 ring-2 ring-white/20" title="Gold Amber" />
-            <span className="w-3 h-3 rounded-full bg-emerald-400 opacity-60" title="Emerald" />
-            <span className="w-3 h-3 rounded-full bg-white opacity-60" title="High Contrast" />
-            <span className="w-3 h-3 rounded-full bg-purple-400 opacity-60" title="Neon Purple" />
-          </div>
-
-          <div className="flex items-center gap-2 text-xs font-mono-accent text-zinc-400">
-            <span>02:44 / 04:12</span>
-            <div className="p-1 rounded-full bg-amber-400 text-zinc-950">
-              <Play className="w-3 h-3 fill-current" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <BoMusicCarousel />;
   }
 
   if (demoType === 'downloader') {

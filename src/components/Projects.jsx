@@ -148,7 +148,7 @@ export default function Projects({ onLaunchDemo }) {
                       href={project.downloadUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-teal-400 text-zinc-950 hover:from-cyan-300 hover:to-teal-300 transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:-translate-y-0.5"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download APK</span>
