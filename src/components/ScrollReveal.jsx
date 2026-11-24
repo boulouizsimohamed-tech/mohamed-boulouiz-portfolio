@@ -4,27 +4,32 @@ export default function ScrollReveal({
   children, 
   className = '', 
   delay = 0, 
-  direction = 'up', // 'up', 'down', 'left', 'right', 'none'
-  threshold = 0.12,
-  duration = 750
+  direction = 'up', // 'up', 'down', 'left', 'right', 'scale', 'none'
+  threshold = 0.08,
+  duration = 850
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef(null);
 
   useEffect(() => {
+    // Respect user's reduced-motion preference
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            // Once visible, keep it visible (reveal on scroll)
             if (domRef.current) {
               observer.unobserve(domRef.current);
             }
           }
         });
       },
-      { threshold, rootMargin: '0px 0px -40px 0px' }
+      { threshold, rootMargin: '0px 0px -30px 0px' }
     );
 
     const currentElem = domRef.current;
@@ -37,20 +42,22 @@ export default function ScrollReveal({
     };
   }, [threshold]);
 
-  // Initial transform offset based on direction
+  // Initial transform offset based on direction with micro-scale
   const getTransform = () => {
     if (isVisible) return 'translate3d(0, 0, 0) scale(1)';
     switch (direction) {
       case 'up':
-        return 'translate3d(0, 36px, 0) scale(0.98)';
+        return 'translate3d(0, 32px, 0) scale(0.97)';
       case 'down':
-        return 'translate3d(0, -36px, 0) scale(0.98)';
+        return 'translate3d(0, -32px, 0) scale(0.97)';
       case 'left':
-        return 'translate3d(36px, 0, 0)';
+        return 'translate3d(32px, 0, 0) scale(0.98)';
       case 'right':
-        return 'translate3d(-36px, 0, 0)';
+        return 'translate3d(-32px, 0, 0) scale(0.98)';
+      case 'scale':
+        return 'scale(0.94)';
       default:
-        return 'scale(0.97)';
+        return 'translate3d(0, 20px, 0) scale(0.98)';
     }
   };
 
@@ -59,9 +66,10 @@ export default function ScrollReveal({
       ref={domRef}
       style={{
         opacity: isVisible ? 1 : 0,
+        filter: isVisible ? 'blur(0px)' : 'blur(4px)',
         transform: getTransform(),
-        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        willChange: 'opacity, transform'
+        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, filter ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        willChange: 'opacity, transform, filter'
       }}
       className={className}
     >
