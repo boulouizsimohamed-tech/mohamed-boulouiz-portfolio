@@ -81,9 +81,7 @@ export default function ThemeToggle() {
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (supportsViewTransition) {
-      // Set transition direction attribute for z-index stacking
-      const transitionType = targetTheme ? 'to-dark' : 'to-light';
-      document.documentElement.dataset.themeTransition = transitionType;
+      document.documentElement.dataset.themeTransition = targetTheme ? 'to-dark' : 'to-light';
 
       const transition = document.startViewTransition(() => {
         setIsDark(targetTheme);
@@ -91,37 +89,21 @@ export default function ThemeToggle() {
       });
 
       transition.ready.then(() => {
-        if (targetTheme) {
-          // Expanding Wave to Dark: new dark view expands outward on top
-          document.documentElement.animate(
-            {
-              clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${endRadius}px at ${x}px ${y}px)`
-              ]
-            },
-            {
-              duration: 550,
-              easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-              pseudoElement: '::view-transition-new(root)'
-            }
-          );
-        } else {
-          // Retracting Wave to Light: old dark view contracts back inward into button
-          document.documentElement.animate(
-            {
-              clipPath: [
-                `circle(${endRadius}px at ${x}px ${y}px)`,
-                `circle(0px at ${x}px ${y}px)`
-              ]
-            },
-            {
-              duration: 550,
-              easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-              pseudoElement: '::view-transition-old(root)'
-            }
-          );
-        }
+        // Smooth and fast circular reveal wave spreading outward from toggle center
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`
+            ]
+          },
+          {
+            duration: 380,
+            easing: 'cubic-bezier(0.2, 0, 0, 1)',
+            fill: 'forwards',
+            pseudoElement: '::view-transition-new(root)'
+          }
+        );
       });
 
       transition.finished.finally(() => {

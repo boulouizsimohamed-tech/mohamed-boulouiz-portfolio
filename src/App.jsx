@@ -23,7 +23,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#070709] text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#070709] text-zinc-900 dark:text-zinc-100">
       {/* Scroll Progress Bar */}
       <ScrollProgressBar />
 
