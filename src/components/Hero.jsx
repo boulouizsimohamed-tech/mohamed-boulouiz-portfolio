@@ -77,15 +77,15 @@ export default function Hero({ onOpenResume }) {
 
             {/* Main Headline with Typewriter & Fixed Height Container */}
             <ScrollReveal direction="up" delay={160} className="w-full">
-              <div className="min-h-[105px] xs:min-h-[115px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[165px] flex items-start mb-5 sm:mb-6">
-                <h1 className="font-display font-black text-3.5xl xs:text-4xl sm:text-5xl md:text-6xl xl:text-7xl tracking-tight text-zinc-950 dark:text-white leading-[1.12] sm:leading-[1.08]">
+              <div className="min-h-[120px] xs:min-h-[125px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[165px] flex items-start mb-5 sm:mb-6">
+                <h1 className="font-display font-black text-4xl xs:text-[2.65rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-7xl tracking-tight text-zinc-950 dark:text-white leading-[1.1] sm:leading-[1.08]">
                   <span>Hi, I'm </span>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-950 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-400">
                     {currentText}
                   </span>
                   {/* Blinking Cursor */}
                   <span 
-                    className="inline-block w-[3px] h-[0.82em] ml-1 bg-amber-500 dark:bg-amber-400 align-baseline animate-blink rounded-xs shadow-[0_0_8px_rgba(245,158,11,0.6)]" 
+                    className="inline-block w-[3.5px] h-[0.8em] ml-1.5 bg-amber-500 dark:bg-amber-400 align-baseline animate-blink rounded-xs shadow-[0_0_10px_rgba(245,158,11,0.7)]" 
                     aria-hidden="true"
                   />
                 </h1>
