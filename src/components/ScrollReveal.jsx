@@ -5,8 +5,8 @@ export default function ScrollReveal({
   className = '', 
   delay = 0, 
   direction = 'up', // 'up', 'down', 'left', 'right', 'scale', 'none'
-  threshold = 0.08,
-  duration = 850
+  threshold = 0.05,
+  duration = 550
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef(null);
@@ -29,7 +29,7 @@ export default function ScrollReveal({
           }
         });
       },
-      { threshold, rootMargin: '0px 0px -30px 0px' }
+      { threshold, rootMargin: '0px 0px -20px 0px' }
     );
 
     const currentElem = domRef.current;
@@ -47,17 +47,17 @@ export default function ScrollReveal({
     if (isVisible) return 'translate3d(0, 0, 0) scale(1)';
     switch (direction) {
       case 'up':
-        return 'translate3d(0, 32px, 0) scale(0.97)';
+        return 'translate3d(0, 24px, 0) scale(0.98)';
       case 'down':
-        return 'translate3d(0, -32px, 0) scale(0.97)';
+        return 'translate3d(0, -24px, 0) scale(0.98)';
       case 'left':
-        return 'translate3d(32px, 0, 0) scale(0.98)';
+        return 'translate3d(24px, 0, 0) scale(0.98)';
       case 'right':
-        return 'translate3d(-32px, 0, 0) scale(0.98)';
+        return 'translate3d(-24px, 0, 0) scale(0.98)';
       case 'scale':
-        return 'scale(0.94)';
+        return 'scale(0.95)';
       default:
-        return 'translate3d(0, 20px, 0) scale(0.98)';
+        return 'translate3d(0, 16px, 0) scale(0.98)';
     }
   };
 
@@ -66,10 +66,9 @@ export default function ScrollReveal({
       ref={domRef}
       style={{
         opacity: isVisible ? 1 : 0,
-        filter: isVisible ? 'blur(0px)' : 'blur(4px)',
         transform: getTransform(),
-        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, filter ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        willChange: 'opacity, transform, filter'
+        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        willChange: isVisible ? 'auto' : 'opacity, transform'
       }}
       className={className}
     >

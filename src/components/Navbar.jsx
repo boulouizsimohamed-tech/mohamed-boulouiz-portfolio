@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ArrowUpRight, Code, Sparkles, FolderGit2, Mail, User, Download, MapPin } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { profileData } from '../data/profile';
@@ -6,13 +6,21 @@ import { profileData } from '../data/profile';
 export default function Navbar({ onOpenResume }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const rafId = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15);
+      if (rafId.current) return;
+      rafId.current = requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 10);
+        rafId.current = null;
+      });
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+    };
   }, []);
 
   // Prevent background scrolling when mobile drawer is open
@@ -36,11 +44,16 @@ export default function Navbar({ onOpenResume }) {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled
-        ? 'py-2.5 sm:py-3 bg-white/85 dark:bg-[#070709]/85 backdrop-blur-xl border-b border-zinc-200/80 dark:border-zinc-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_25px_rgba(0,0,0,0.4)]'
-        : 'py-3.5 sm:py-5 bg-transparent'
-    }`}>
+    <header 
+      style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 select-none ${
+        /* On mobile: ALWAYS fixed frosted glass so it never hides or blends during scrolling */
+        /* On desktop: smooth padding transition from transparent to frosted */
+        isScrolled
+          ? 'py-2 sm:py-3 bg-white/95 dark:bg-[#070709]/95 backdrop-blur-xl border-b border-zinc-200/80 dark:border-zinc-800/80 shadow-[0_2px_15px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_25px_rgba(0,0,0,0.4)]'
+          : 'py-2.5 sm:py-5 bg-white/90 sm:bg-transparent dark:bg-[#070709]/90 sm:dark:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-b border-zinc-200/70 sm:border-transparent dark:border-zinc-800/70 sm:dark:border-transparent shadow-[0_1px_10px_rgba(0,0,0,0.03)] sm:shadow-none'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-2">
           {/* Brand Monogram */}
@@ -48,7 +61,7 @@ export default function Navbar({ onOpenResume }) {
             href="#"
             className="group flex items-center gap-2.5 sm:gap-3 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-950 dark:focus-visible:ring-white rounded-lg min-w-0"
           >
-            <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-display font-extrabold text-base sm:text-lg shadow-md tracking-tight transition-transform duration-300 group-hover:scale-105 shrink-0">
+            <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-display font-extrabold text-base sm:text-lg shadow-md tracking-tight transition-transform duration-200 group-hover:scale-105 shrink-0">
               <span>MB</span>
               <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-950 animate-pulse" />
             </div>
@@ -68,7 +81,7 @@ export default function Navbar({ onOpenResume }) {
               <a
                 key={link.name}
                 href={link.href}
-                className="px-4 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-full transition-all duration-200"
+                className="px-4 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-full transition-all duration-150"
               >
                 {link.name}
               </a>
@@ -83,7 +96,7 @@ export default function Navbar({ onOpenResume }) {
             {/* Desktop Connect Button */}
             <a
               href="#contact"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all duration-200 shadow-xs hover:shadow-md hover:-translate-y-0.5"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all duration-150 shadow-xs hover:shadow-md hover:-translate-y-0.5"
             >
               <span>Let's Connect</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -107,7 +120,7 @@ export default function Navbar({ onOpenResume }) {
       {mobileMenuOpen && (
         <div 
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 top-[57px] sm:top-[65px] z-40 bg-black/60 backdrop-blur-md md:hidden animate-fade-in"
+          className="fixed inset-0 top-[52px] sm:top-[60px] z-40 bg-black/60 backdrop-blur-md md:hidden animate-fade-in"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
