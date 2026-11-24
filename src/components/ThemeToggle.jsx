@@ -14,7 +14,7 @@ export default function ThemeToggle() {
 
   const toggleRef = useRef(null);
 
-  // Apply theme attributes
+  // Apply theme attributes to document & local storage
   const applyTheme = (dark) => {
     const root = document.documentElement;
     const body = document.body;
@@ -46,86 +46,92 @@ export default function ThemeToggle() {
     applyTheme(isDark);
   }, []);
 
-  // Telegram-style Circular Reveal Transition
+  // Expanding & Retracting Circular Ripple Wave Theme Transition
   const handleToggle = (targetTheme, event) => {
     if (targetTheme === isDark) return;
 
-    // Get click origin coordinates
-    let x = window.innerWidth / 2;
-    let y = 30;
-
-    if (event) {
+    // Calculate exact click/tap coordinates (x, y)
+    let x, y;
+    if (event && typeof event.clientX === 'number' && event.clientX > 0) {
+      x = event.clientX;
+      y = event.clientY;
+    } else if (event && event.currentTarget) {
       const rect = event.currentTarget.getBoundingClientRect();
-      x = event.clientX || (rect.left + rect.width / 2);
-      y = event.clientY || (rect.top + rect.height / 2);
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
     } else if (toggleRef.current) {
       const rect = toggleRef.current.getBoundingClientRect();
       x = rect.left + rect.width / 2;
       y = rect.top + rect.height / 2;
+    } else {
+      x = window.innerWidth / 2;
+      y = 40;
     }
 
+    // Radius required to reach the furthest corner from (x, y)
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     );
 
-    // Check if View Transitions API is supported
-    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+    // Feature detection for View Transitions API and reduced-motion preference
+    const supportsViewTransition =
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (supportsViewTransition) {
+      // Set transition direction attribute for z-index stacking
+      const transitionType = targetTheme ? 'to-dark' : 'to-light';
+      document.documentElement.dataset.themeTransition = transitionType;
+
       const transition = document.startViewTransition(() => {
         setIsDark(targetTheme);
         applyTheme(targetTheme);
       });
 
       transition.ready.then(() => {
-        document.documentElement.animate(
-          {
-            clipPath: [
-              `circle(0px at ${x}px ${y}px)`,
-              `circle(${endRadius}px at ${x}px ${y}px)`
-            ]
-          },
-          {
-            duration: 520,
-            easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-            pseudoElement: '::view-transition-new(root)'
-          }
-        );
+        if (targetTheme) {
+          // Expanding Wave to Dark: new dark view expands outward on top
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`
+              ]
+            },
+            {
+              duration: 550,
+              easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              pseudoElement: '::view-transition-new(root)'
+            }
+          );
+        } else {
+          // Retracting Wave to Light: old dark view contracts back inward into button
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(${endRadius}px at ${x}px ${y}px)`,
+                `circle(0px at ${x}px ${y}px)`
+              ]
+            },
+            {
+              duration: 550,
+              easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              pseudoElement: '::view-transition-old(root)'
+            }
+          );
+        }
+      });
+
+      transition.finished.finally(() => {
+        delete document.documentElement.dataset.themeTransition;
       });
     } else {
-      // Fallback Circular Ripple Overlay for browsers without View Transition support
-      createRippleFallback(x, y, endRadius, targetTheme);
+      // Graceful fallback: instant theme update with subtle CSS transition
       setIsDark(targetTheme);
       applyTheme(targetTheme);
     }
-  };
-
-  // Fallback circular expanding ripple for older/unsupported browsers
-  const createRippleFallback = (x, y, radius, targetTheme) => {
-    const ripple = document.createElement('div');
-    const size = radius * 2;
-    ripple.style.position = 'fixed';
-    ripple.style.left = `${x - radius}px`;
-    ripple.style.top = `${y - radius}px`;
-    ripple.style.width = `${size}px`;
-    ripple.style.height = `${size}px`;
-    ripple.style.borderRadius = '50%';
-    ripple.style.backgroundColor = targetTheme ? '#070709' : '#ffffff';
-    ripple.style.pointerEvents = 'none';
-    ripple.style.zIndex = '999999';
-    ripple.style.transform = 'scale(0)';
-    ripple.style.transition = 'transform 480ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease 300ms';
-    ripple.style.willChange = 'transform, opacity';
-    document.body.appendChild(ripple);
-
-    requestAnimationFrame(() => {
-      ripple.style.transform = 'scale(1)';
-      setTimeout(() => {
-        ripple.style.opacity = '0';
-        setTimeout(() => {
-          if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
-        }, 220);
-      }, 300);
-    });
   };
 
   return (
@@ -133,7 +139,7 @@ export default function ThemeToggle() {
       ref={toggleRef}
       className="relative flex items-center p-1 rounded-full border border-zinc-200/90 dark:border-zinc-800/90 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-xs select-none transition-colors"
     >
-      {/* Light button */}
+      {/* Light Mode Button */}
       <button
         type="button"
         onClick={(e) => handleToggle(false, e)}
@@ -148,7 +154,7 @@ export default function ThemeToggle() {
         <span className="hidden sm:inline-block">Light</span>
       </button>
 
-      {/* Night button */}
+      {/* Dark / Night Mode Button */}
       <button
         type="button"
         onClick={(e) => handleToggle(true, e)}
