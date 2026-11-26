@@ -120,9 +120,9 @@ export const projectsData = [
     subtitle: "Full-Stack Luxury Clothing E-Commerce & Brand Platform",
     tagline: "End-to-end luxury fashion shopping experience featuring a normalized MySQL relational architecture, Next.js, PHP, and custom visual identity.",
     summary: "BOULOUIZ SHOP is an e-commerce platform built for high-end fashion and streetwear merchandising. It unites a minimalist, editorial-grade Next.js frontend with robust PHP backend controllers and a strictly normalized MySQL relational database (3NF), ensuring ACID-compliant transaction safety, accurate inventory tracking across multiple sizes, and an effortless checkout experience.",
-    coverAccent: "from-blue-500/20 via-indigo-500/10 to-zinc-900/40",
-    borderAccent: "hover:border-blue-500/50",
-    accentColor: "#3b82f6",
+    coverAccent: "from-amber-500/20 via-yellow-500/10 to-zinc-900/40",
+    borderAccent: "hover:border-amber-500/50",
+    accentColor: "#f59e0b",
     tags: ["Next.js", "PHP", "MySQL", "JavaScript (ES6+)", "Bootstrap", "jQuery", "Brand Identity"],
     metrics: [
       { label: "Database Normalization", value: "Strict 3NF" },
