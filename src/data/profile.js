@@ -29,6 +29,11 @@ My engineering philosophy centers on clean architectural separation, normalized 
     phone: import.meta.env.VITE_PHONE_DISPLAY || "+212 677-928621",
     phoneRaw: import.meta.env.VITE_PHONE || "+212677928621",
     whatsapp: import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/212677928621",
+    instagram: "https://www.instagram.com/simohamed_boulouiz?dlrf=MTIxcWc5c3hhcWQzbA==",
+    x: "https://x.com/B71159Simohamed",
+    telegram: "https://t.me/Mohamed_boulouiz",
+    facebook: "https://www.facebook.com/share/1F7bDPvZjx/",
+    paypal: "https://www.paypal.me/Simoxblz",
     portfolio: import.meta.env.VITE_GITHUB_URL || "https://github.com/boulouizsimohamed-tech"
   },
   status: "Available for freelance projects, internships & engineering roles"

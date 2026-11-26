@@ -3,7 +3,10 @@ import {
   Mail, MapPin, Send, Check, Copy, ExternalLink, 
   MessageSquare, Clock, ArrowUpRight, Phone
 } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, WhatsAppIcon } from './Icons';
+import { 
+  GithubIcon, LinkedinIcon, WhatsAppIcon, InstagramIcon, 
+  XIcon, TelegramIcon, FacebookIcon, PaypalIcon 
+} from './Icons';
 import { profileData } from '../data/profile';
 import ScrollReveal from './ScrollReveal';
 
@@ -215,48 +218,34 @@ export default function Contact() {
             {/* Social Channels Cluster */}
             <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/40 space-y-3">
               <span className="text-xs font-mono-accent uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Professional Networks & Code
+                Socials, Networks & Support
               </span>
 
-              <div className="space-y-2 pt-1">
-                <a
-                  href={profileData.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <GithubIcon className="w-4 h-4" />
-                    <span className="text-xs font-semibold">GitHub Profile</span>
-                  </div>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
-                </a>
-
-                <a
-                  href={profileData.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <LinkedinIcon className="w-4 h-4" />
-                    <span className="text-xs font-semibold">LinkedIn Profile</span>
-                  </div>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
-                </a>
-
-                <a
-                  href={profileData.socials.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <WhatsAppIcon className="w-4 h-4 text-emerald-500" />
-                    <span className="text-xs font-semibold">WhatsApp Direct Message</span>
-                  </div>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
-                </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                {[
+                  { label: 'GitHub', href: profileData.socials.github, Icon: GithubIcon, iconColor: 'text-zinc-900 dark:text-white' },
+                  { label: 'LinkedIn', href: profileData.socials.linkedin, Icon: LinkedinIcon, iconColor: 'text-blue-500' },
+                  { label: 'WhatsApp', href: profileData.socials.whatsapp, Icon: WhatsAppIcon, iconColor: 'text-emerald-500' },
+                  { label: 'Telegram', href: profileData.socials.telegram, Icon: TelegramIcon, iconColor: 'text-sky-500' },
+                  { label: 'Instagram', href: profileData.socials.instagram, Icon: InstagramIcon, iconColor: 'text-pink-500' },
+                  { label: 'X (Twitter)', href: profileData.socials.x, Icon: XIcon, iconColor: 'text-zinc-900 dark:text-white' },
+                  { label: 'Facebook', href: profileData.socials.facebook, Icon: FacebookIcon, iconColor: 'text-blue-600' },
+                  { label: 'PayPal Support', href: profileData.socials.paypal, Icon: PaypalIcon, iconColor: 'text-indigo-500' },
+                ].map(({ label, href, Icon, iconColor }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <Icon className={`w-4 h-4 shrink-0 ${iconColor}`} />
+                      <span className="text-xs font-semibold truncate">{label}</span>
+                    </div>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                  </a>
+                ))}
               </div>
             </div>
             </ScrollReveal>

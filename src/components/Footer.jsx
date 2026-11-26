@@ -1,6 +1,9 @@
 import React from 'react';
 import { ArrowUp, Heart, Mail, MessageSquare } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, WhatsAppIcon } from './Icons';
+import { 
+  GithubIcon, LinkedinIcon, WhatsAppIcon, InstagramIcon, 
+  XIcon, TelegramIcon, FacebookIcon, PaypalIcon 
+} from './Icons';
 import { profileData } from '../data/profile';
 
 export default function Footer() {
@@ -30,41 +33,29 @@ export default function Footer() {
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-4 text-zinc-600 dark:text-zinc-400">
-            <a
-              href={profileData.socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub Profile"
-              className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors"
-            >
-              <GithubIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={profileData.socials.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn Profile"
-              className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors"
-            >
-              <LinkedinIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={`mailto:${profileData.socials.email}`}
-              aria-label="Send Email"
-              className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
-            <a
-              href={profileData.socials.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp Message"
-              className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors"
-            >
-              <WhatsAppIcon className="w-4 h-4" />
-            </a>
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-zinc-600 dark:text-zinc-400">
+            {[
+              { href: profileData.socials.github, label: 'GitHub Profile', Icon: GithubIcon, external: true },
+              { href: profileData.socials.linkedin, label: 'LinkedIn Profile', Icon: LinkedinIcon, external: true },
+              { href: `mailto:${profileData.socials.email}`, label: 'Send Email', Icon: Mail, external: false },
+              { href: profileData.socials.whatsapp, label: 'WhatsApp Message', Icon: WhatsAppIcon, external: true },
+              { href: profileData.socials.telegram, label: 'Telegram', Icon: TelegramIcon, external: true },
+              { href: profileData.socials.instagram, label: 'Instagram', Icon: InstagramIcon, external: true },
+              { href: profileData.socials.x, label: 'X (Twitter)', Icon: XIcon, external: true },
+              { href: profileData.socials.facebook, label: 'Facebook', Icon: FacebookIcon, external: true },
+              { href: profileData.socials.paypal, label: 'PayPal Support', Icon: PaypalIcon, external: true },
+            ].map(({ href, label, Icon, external }) => (
+              <a
+                key={label}
+                href={href}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                aria-label={label}
+                title={label}
+                className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors"
+              >
+                <Icon className="w-4 h-4" />
+              </a>
+            ))}
           </div>
 
           {/* Back to Top Button */}
