@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import ProjectCardVisual from './ProjectCardVisual';
 
-export default function ProjectModal({ project, isOpen, onClose, onOpenDemo }) {
+export default function ProjectModal({ project, isOpen, onClose }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -206,18 +206,6 @@ export default function ProjectModal({ project, isOpen, onClose, onOpenDemo }) {
                 <span>Download Latest Release</span>
               </a>
             )}
-
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                if (onOpenDemo) onOpenDemo(project.demoType);
-              }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md"
-            >
-              <span>Launch Interactive Simulator</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>

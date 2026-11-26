@@ -100,7 +100,7 @@ export default function Contact() {
         <ScrollReveal direction="up" delay={100}>
           <div className="flex flex-col items-start max-w-2xl mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs font-mono-accent text-zinc-600 dark:text-zinc-400 mb-3">
-              <span>05 // INITIATE COLLABORATION</span>
+              <span>04 // INITIATE COLLABORATION</span>
             </div>
             <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-950 dark:text-white">
               Let's Build Something Exceptional.

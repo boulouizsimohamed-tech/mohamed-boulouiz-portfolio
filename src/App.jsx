@@ -5,22 +5,12 @@ import Hero from './components/Hero';
 import About from './components/About';
 import SkillsMatrix from './components/SkillsMatrix';
 import Projects from './components/Projects';
-import InteractiveDemos from './components/InteractiveDemos';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ResumeModal from './components/ResumeModal';
 
 export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [activeLabTarget, setActiveLabTarget] = useState('audio-player');
-
-  const handleLaunchDemo = (demoType) => {
-    setActiveLabTarget(demoType);
-    const demoElement = document.getElementById('demos');
-    if (demoElement) {
-      demoElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#070709] text-zinc-900 dark:text-zinc-100">
@@ -42,10 +32,7 @@ export default function App() {
         <SkillsMatrix />
 
         {/* Projects Showcase */}
-        <Projects onLaunchDemo={handleLaunchDemo} />
-
-        {/* Interactive Component & Architecture Labs */}
-        <InteractiveDemos activeLab={activeLabTarget} />
+        <Projects />
 
         {/* Contact Section */}
         <Contact />

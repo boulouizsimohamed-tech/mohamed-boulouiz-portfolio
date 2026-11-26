@@ -39,7 +39,6 @@ export default function Navbar({ onOpenResume }) {
     { name: 'About', href: '#about', icon: User },
     { name: 'Skills', href: '#skills', icon: Code },
     { name: 'Projects', href: '#projects', icon: FolderGit2 },
-    { name: 'Interactive Labs', href: '#demos', icon: Sparkles },
     { name: 'Contact', href: '#contact', icon: Mail },
   ];
 

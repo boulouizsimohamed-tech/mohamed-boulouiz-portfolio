@@ -8,7 +8,7 @@ import ProjectCardVisual from './ProjectCardVisual';
 import ProjectModal from './ProjectModal';
 import ScrollReveal from './ScrollReveal';
 
-export default function Projects({ onLaunchDemo }) {
+export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -158,15 +158,6 @@ export default function Projects({ onLaunchDemo }) {
                       <span>Download APK</span>
                     </a>
                   )}
-
-                  <button
-                    type="button"
-                    onClick={() => onLaunchDemo && onLaunchDemo(project.demoType)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors shadow-xs"
-                  >
-                    <span>Test Simulator</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
                 </div>
               </div>
             </article>
@@ -181,7 +172,6 @@ export default function Projects({ onLaunchDemo }) {
         project={selectedProject}
         isOpen={isModalOpen}
         onClose={handleCloseDetails}
-        onOpenDemo={onLaunchDemo}
       />
     </section>
   );
