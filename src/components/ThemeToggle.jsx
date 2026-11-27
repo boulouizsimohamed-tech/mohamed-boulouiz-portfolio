@@ -49,7 +49,7 @@ export default function ThemeToggle() {
     applyTheme(isDark);
   }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = (e) => {
     if (isTransitioningRef.current) return;
 
     const targetDark = !isDark;
@@ -66,7 +66,9 @@ export default function ThemeToggle() {
       'startViewTransition' in document &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!supportsViewTransition || !buttonRef.current) {
+    const targetEl = e?.currentTarget || buttonRef.current;
+
+    if (!supportsViewTransition || !targetEl) {
       commitThemeChange();
       return;
     }
@@ -75,9 +77,13 @@ export default function ThemeToggle() {
     const root = document.documentElement;
     const directionClass = targetDark ? 'to-dark' : 'to-light';
 
-    const rect = buttonRef.current.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+    const rect = targetEl.getBoundingClientRect();
+    const offsetX = window.visualViewport?.offsetLeft ?? 0;
+    const offsetY = window.visualViewport?.offsetTop ?? 0;
+    const hasRect = rect.width > 0 && rect.height > 0;
+
+    const x = hasRect ? rect.left + rect.width / 2 + offsetX : e.clientX;
+    const y = hasRect ? rect.top + rect.height / 2 + offsetY : e.clientY;
 
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
@@ -100,7 +106,7 @@ export default function ThemeToggle() {
           { clipPath },
           {
             duration: 850,
-            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
             fill: 'forwards',
             pseudoElement: targetDark ? '::view-transition-new(root)' : '::view-transition-old(root)'
           }
