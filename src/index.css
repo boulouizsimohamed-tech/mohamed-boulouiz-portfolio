@@ -158,75 +158,37 @@ html[data-theme-transition] *::after {
     margin: 8mm 10mm;
   }
 
-  /* Reset document defaults for print */
   html, body {
     margin: 0 !important;
     padding: 0 !important;
-    background: #ffffff !important;
-    color: #0f172a !important;
-    font-size: 10pt !important;
     width: 100% !important;
     height: auto !important;
-    overflow: visible !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Hide entire page tree by default */
-  body * {
-    visibility: hidden !important;
-  }
-
-  /* Force CV print sheet and its contents to be visible */
-  #cv-print-sheet,
-  #cv-print-sheet * {
-    visibility: visible !important;
-  }
-
-  /* Anchor the CV sheet at top-left with 100% width and clean print styling */
-  #cv-print-sheet {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
     background: #ffffff !important;
     color: #0f172a !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
     overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Completely strip dialog element constraints during print */
-  dialog {
-    all: unset !important;
-    display: block !important;
-    position: static !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    background: transparent !important;
-    max-height: none !important;
-    max-width: none !important;
-  }
-
-  /* Hide modal chrome, buttons, navbar, and background portfolio components */
-  .no-print,
-  dialog::backdrop,
-  header,
-  footer,
-  main {
+  /* Completely collapse the main app and modal dialog so they take 0 pages */
+  #root,
+  dialog,
+  .no-print {
     display: none !important;
   }
 
-  /* Prevent page breaks inside cards */
+  /* Render ONLY the dedicated print portal directly on body at full A4 width */
+  #printable-cv-portal {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   .print-avoid-break {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
