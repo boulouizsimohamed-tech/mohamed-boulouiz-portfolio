@@ -7,26 +7,27 @@
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  display: block;
 }
 
-[data-theme-transition="to-dark"]::view-transition-old(root) {
+html.to-dark::view-transition-old(root) {
   z-index: 1;
 }
-[data-theme-transition="to-dark"]::view-transition-new(root) {
+html.to-dark::view-transition-new(root) {
   z-index: 9999;
 }
 
-[data-theme-transition="to-light"]::view-transition-old(root) {
-  z-index: 9999;
-}
-[data-theme-transition="to-light"]::view-transition-new(root) {
+html.to-light::view-transition-new(root) {
   z-index: 1;
+}
+html.to-light::view-transition-old(root) {
+  z-index: 9999;
 }
 
 /* Prevent CSS transitions from conflicting during View Transition snapshot */
-html[data-theme-transition] *,
-html[data-theme-transition] *::before,
-html[data-theme-transition] *::after {
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
   transition: none !important;
 }
 

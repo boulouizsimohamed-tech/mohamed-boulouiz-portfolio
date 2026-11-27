@@ -17,6 +17,7 @@ export default function ThemeToggle() {
   });
 
   const buttonRef = useRef(null);
+  const isTransitioningRef = useRef(false);
 
   const applyTheme = (dark) => {
     const root = document.documentElement;
@@ -49,9 +50,11 @@ export default function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
+    if (isTransitioningRef.current) return;
+
     const targetDark = !isDark;
 
-    const toggleState = () => {
+    const commitThemeChange = () => {
       flushSync(() => {
         setIsDark(targetDark);
       });
@@ -64,9 +67,13 @@ export default function ThemeToggle() {
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!supportsViewTransition || !buttonRef.current) {
-      toggleState();
+      commitThemeChange();
       return;
     }
+
+    isTransitioningRef.current = true;
+    const root = document.documentElement;
+    const directionClass = targetDark ? 'to-dark' : 'to-light';
 
     const rect = buttonRef.current.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
@@ -77,30 +84,35 @@ export default function ThemeToggle() {
       Math.max(y, window.innerHeight - y)
     );
 
-    document.documentElement.dataset.themeTransition = targetDark ? 'to-dark' : 'to-light';
+    root.classList.add('theme-transitioning', directionClass);
 
     const transition = document.startViewTransition(() => {
-      toggleState();
+      commitThemeChange();
     });
 
-    transition.ready.then(() => {
-      const clipPath = targetDark
-        ? [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
-        : [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`];
+    transition.ready
+      .then(() => {
+        const clipPath = targetDark
+          ? [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+          : [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`];
 
-      document.documentElement.animate(
-        { clipPath },
-        {
-          duration: 500,
-          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-          fill: 'forwards',
-          pseudoElement: targetDark ? '::view-transition-new(root)' : '::view-transition-old(root)'
-        }
-      );
-    });
+        root.animate(
+          { clipPath },
+          {
+            duration: 850,
+            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            fill: 'forwards',
+            pseudoElement: targetDark ? '::view-transition-new(root)' : '::view-transition-old(root)'
+          }
+        );
+      })
+      .catch(() => {
+        // Ignore aborted transition errors cleanly
+      });
 
     transition.finished.finally(() => {
-      delete document.documentElement.dataset.themeTransition;
+      root.classList.remove('theme-transitioning', 'to-dark', 'to-light');
+      isTransitioningRef.current = false;
     });
   };
 
