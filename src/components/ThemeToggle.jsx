@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { Sun, Moon } from 'lucide-react';
 
 export default function ThemeToggle() {
@@ -7,14 +8,16 @@ export default function ThemeToggle() {
       const stored = localStorage.getItem('color-scheme') || localStorage.getItem('theme');
       if (stored === 'dark') return true;
       if (stored === 'light') return false;
-      return true; // Default to night mode
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        return false;
+      }
+      return true;
     }
     return true;
   });
 
-  const toggleRef = useRef(null);
+  const buttonRef = useRef(null);
 
-  // Apply theme attributes to document & local storage
   const applyTheme = (dark) => {
     const root = document.documentElement;
     const body = document.body;
@@ -41,115 +44,80 @@ export default function ThemeToggle() {
     }
   };
 
-  // Initial sync on mount
   useEffect(() => {
     applyTheme(isDark);
   }, []);
 
-  // Expanding & Retracting Circular Ripple Wave Theme Transition
-  const handleToggle = (targetTheme, event) => {
-    if (targetTheme === isDark) return;
+  const toggleTheme = () => {
+    const targetDark = !isDark;
 
-    // Calculate exact click/tap coordinates (x, y)
-    let x, y;
-    if (event && typeof event.clientX === 'number' && event.clientX > 0) {
-      x = event.clientX;
-      y = event.clientY;
-    } else if (event && event.currentTarget) {
-      const rect = event.currentTarget.getBoundingClientRect();
-      x = rect.left + rect.width / 2;
-      y = rect.top + rect.height / 2;
-    } else if (toggleRef.current) {
-      const rect = toggleRef.current.getBoundingClientRect();
-      x = rect.left + rect.width / 2;
-      y = rect.top + rect.height / 2;
-    } else {
-      x = window.innerWidth / 2;
-      y = 40;
-    }
+    const toggleState = () => {
+      flushSync(() => {
+        setIsDark(targetDark);
+      });
+      applyTheme(targetDark);
+    };
 
-    // Radius required to reach the furthest corner from (x, y)
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    // Feature detection for View Transitions API and reduced-motion preference
     const supportsViewTransition =
       typeof document !== 'undefined' &&
       'startViewTransition' in document &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (supportsViewTransition) {
-      document.documentElement.dataset.themeTransition = targetTheme ? 'to-dark' : 'to-light';
-
-      const transition = document.startViewTransition(() => {
-        setIsDark(targetTheme);
-        applyTheme(targetTheme);
-      });
-
-      transition.ready.then(() => {
-        // Smooth and fast circular reveal wave spreading outward from toggle center
-        document.documentElement.animate(
-          {
-            clipPath: [
-              `circle(0px at ${x}px ${y}px)`,
-              `circle(${endRadius}px at ${x}px ${y}px)`
-            ]
-          },
-          {
-            duration: 380,
-            easing: 'cubic-bezier(0.2, 0, 0, 1)',
-            fill: 'forwards',
-            pseudoElement: '::view-transition-new(root)'
-          }
-        );
-      });
-
-      transition.finished.finally(() => {
-        delete document.documentElement.dataset.themeTransition;
-      });
-    } else {
-      // Graceful fallback: instant theme update with subtle CSS transition
-      setIsDark(targetTheme);
-      applyTheme(targetTheme);
+    if (!supportsViewTransition || !buttonRef.current) {
+      toggleState();
+      return;
     }
+
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    document.documentElement.dataset.themeTransition = targetDark ? 'to-dark' : 'to-light';
+
+    const transition = document.startViewTransition(() => {
+      toggleState();
+    });
+
+    transition.ready.then(() => {
+      const clipPath = targetDark
+        ? [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+        : [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`];
+
+      document.documentElement.animate(
+        { clipPath },
+        {
+          duration: 500,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'forwards',
+          pseudoElement: targetDark ? '::view-transition-new(root)' : '::view-transition-old(root)'
+        }
+      );
+    });
+
+    transition.finished.finally(() => {
+      delete document.documentElement.dataset.themeTransition;
+    });
   };
 
   return (
-    <div 
-      ref={toggleRef}
-      className="relative flex items-center p-1 rounded-full border border-zinc-200/90 dark:border-zinc-800/90 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-xs select-none transition-colors"
+    <button
+      ref={buttonRef}
+      type="button"
+      onClick={toggleTheme}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="group relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-zinc-200/90 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md shadow-xs hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-800 dark:text-zinc-100 transition-all duration-200 active:scale-90 cursor-pointer select-none"
     >
-      {/* Light Mode Button */}
-      <button
-        type="button"
-        onClick={(e) => handleToggle(false, e)}
-        aria-label="Switch to light mode"
-        className={`relative z-10 flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[11px] font-mono-accent font-semibold transition-all duration-300 ${
-          !isDark
-            ? 'bg-zinc-950 text-white shadow-sm'
-            : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-        }`}
-      >
-        <Sun className={`w-3.5 h-3.5 transition-transform duration-300 ${!isDark ? 'text-amber-400 rotate-0 scale-110' : 'text-zinc-400 -rotate-45'}`} />
-        <span className="hidden sm:inline-block">Light</span>
-      </button>
-
-      {/* Dark / Night Mode Button */}
-      <button
-        type="button"
-        onClick={(e) => handleToggle(true, e)}
-        aria-label="Switch to night mode"
-        className={`relative z-10 flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[11px] font-mono-accent font-semibold transition-all duration-300 ${
-          isDark
-            ? 'bg-white text-zinc-950 shadow-sm'
-            : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-        }`}
-      >
-        <Moon className={`w-3.5 h-3.5 transition-transform duration-300 ${isDark ? 'text-amber-400 rotate-0 scale-110' : 'text-zinc-400 rotate-45'}`} />
-        <span className="hidden sm:inline-block">Night</span>
-      </button>
-    </div>
+      {isDark ? (
+        <Sun className="w-4 h-4 text-amber-400 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110" />
+      ) : (
+        <Moon className="w-4 h-4 text-zinc-800 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
+      )}
+    </button>
   );
 }

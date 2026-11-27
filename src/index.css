@@ -2,19 +2,25 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Circular Ripple Wave View Transition */
+/* Telegram-Style Reversible Circular Ripple Wave View Transition */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-::view-transition-old(root) {
+[data-theme-transition="to-dark"]::view-transition-old(root) {
   z-index: 1;
 }
-
-::view-transition-new(root) {
+[data-theme-transition="to-dark"]::view-transition-new(root) {
   z-index: 9999;
+}
+
+[data-theme-transition="to-light"]::view-transition-old(root) {
+  z-index: 9999;
+}
+[data-theme-transition="to-light"]::view-transition-new(root) {
+  z-index: 1;
 }
 
 /* Prevent CSS transitions from conflicting during View Transition snapshot */
